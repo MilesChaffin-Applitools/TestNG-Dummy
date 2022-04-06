@@ -4,9 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class LoginPage {
-
-    private WebDriver driver;
+public class LoginPage extends Page {
 
     private By usernameSelector = By.cssSelector("#username");
     private By passwordSelector = By.cssSelector("#password");
@@ -15,16 +13,11 @@ public class LoginPage {
     public  By correctPasswordFlashSelector = By.cssSelector("#flash.success");
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        driver.get("http://the-internet.herokuapp.com/login");
+        super(driver);
     }
 
-    public void takeFullPageScreenShot(Eyes eyes, String checkName) {
-        eyes.check(Target.window().fully().withName(checkName));
-    }
-
-    public void takeFullPageScreenShot(Eyes eyes) {
-        eyes.check(Target.window().fully());
+    public String getPageAddress() {
+        return "http://the-internet.herokuapp.com/login";
     }
 
     public void enterUsername(String username) {
@@ -35,7 +28,12 @@ public class LoginPage {
         driver.findElement(passwordSelector).sendKeys(password);
     }
 
-    public void clickLogin() {
+    public SecurePage clickLogin() {
         driver.findElement(loginSelector).click();
+        if (driver.findElements(correctPasswordFlashSelector).size() > 0) {
+            return new SecurePage(this.driver);
+        } else {
+            return null;
+        }
     }
 }
