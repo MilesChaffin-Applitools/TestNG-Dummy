@@ -19,7 +19,7 @@ public abstract class testBase {
     protected ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     protected ThreadLocal<Eyes> eyes = new ThreadLocal<>();
     protected BatchInfo batch;
-    private ClassicRunner runner;
+    private ThreadLocal<ClassicRunner> runner;
 
     public abstract String getAppName();
 
@@ -29,15 +29,17 @@ public abstract class testBase {
         batch.setNotifyOnCompletion(true);
         batch.setSequenceName("TEST_SEQ_1");
 
-        ClassicRunner runner = new ClassicRunner();
-        runner.setDontCloseBatches(true);
+
     }
 
     @BeforeMethod
     public void setup(Method method) {
+        runner.set(new ClassicRunner());
+        runner.get().setDontCloseBatches(true);
+
         driver.set(new ChromeDriver());
 
-        eyes.set(new Eyes(runner));
+        eyes.set(new Eyes(runner.get()));
 
         eyes.get().setConfiguration(eyes.get().getConfiguration()
                 .setBatch(batch)
@@ -54,6 +56,7 @@ public abstract class testBase {
     public void teardown() {
         eyes.get().closeAsync();
         driver.get().quit();
+        runner.get().getAllTestResults();
     }
 
     @AfterClass

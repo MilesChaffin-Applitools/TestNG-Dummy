@@ -30,7 +30,7 @@ public class LoginPage extends Page {
     public SecurePage clickLogin() {
         driver.findElement(loginSelector).click();
         SecurePage securePage = new SecurePage(this.driver);
-        if (driver.findElements(securePage.correctPasswordFlashSelector).size() > 0) {
+        if (securePage.verifyPage()) {
             return securePage;
         } else {
             return null;
