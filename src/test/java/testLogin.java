@@ -17,8 +17,8 @@ public class testLogin extends testBase {
 
     @Test
     public void test_login_failure() {
-        batch.setSequenceName("TEST_SEQ_1");
         LoginPage loginPage = new LoginPage(driver.get());
+        loginPage.goToPage();
 
         loginPage.takeFullPageScreenShot(eyes.get(), "Homepage default");
         loginPage.enterUsername("tomsmith");
@@ -29,8 +29,8 @@ public class testLogin extends testBase {
 
     @Test
     public void test_login_success() {
-        batch.setSequenceName("TEST_SEQ_1");
         LoginPage loginPage = new LoginPage(driver.get());
+        loginPage.goToPage();
 
         loginPage.takeFullPageScreenShot(eyes.get(), "Homepage default");
         loginPage.enterUsername("tomsmith");

@@ -10,14 +10,13 @@ public class LoginPage extends Page {
     private By passwordSelector = By.cssSelector("#password");
     private By loginSelector = By.cssSelector("#login > button");
     public  By invalidPasswordFlashSelector = By.cssSelector("#flash.error");
-    public  By correctPasswordFlashSelector = By.cssSelector("#flash.success");
 
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
-    public String getPageAddress() {
-        return "http://the-internet.herokuapp.com/login";
+    public void goToPage() {
+        driver.get("http://the-internet.herokuapp.com/login");
     }
 
     public void enterUsername(String username) {
@@ -30,8 +29,9 @@ public class LoginPage extends Page {
 
     public SecurePage clickLogin() {
         driver.findElement(loginSelector).click();
-        if (driver.findElements(correctPasswordFlashSelector).size() > 0) {
-            return new SecurePage(this.driver);
+        SecurePage securePage = new SecurePage(this.driver);
+        if (driver.findElements(securePage.correctPasswordFlashSelector).size() > 0) {
+            return securePage;
         } else {
             return null;
         }

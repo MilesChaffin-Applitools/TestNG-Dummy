@@ -18,7 +18,8 @@ import java.util.List;
 public abstract class testBase {
     protected ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     protected ThreadLocal<Eyes> eyes = new ThreadLocal<>();
-    protected static BatchInfo batch;
+    protected BatchInfo batch;
+    private ClassicRunner runner;
 
     public abstract String getAppName();
 
@@ -26,14 +27,15 @@ public abstract class testBase {
     public void setupClass() {
         batch = new BatchInfo(System.getenv("APPLITOOLS_BATCH_NAME"));
         batch.setNotifyOnCompletion(true);
+        batch.setSequenceName("TEST_SEQ_1");
+
+        ClassicRunner runner = new ClassicRunner();
+        runner.setDontCloseBatches(true);
     }
 
     @BeforeMethod
     public void setup(Method method) {
         driver.set(new ChromeDriver());
-
-        ClassicRunner runner = new ClassicRunner();
-        runner.setDontCloseBatches(true);
 
         eyes.set(new Eyes(runner));
 
